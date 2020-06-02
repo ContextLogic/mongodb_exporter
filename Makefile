@@ -9,7 +9,7 @@ test:
 	@rm *.out
 
 deps:
-	glide install
+	go mod vendor
 
 build: deps
 	go build mongodb_exporter.go

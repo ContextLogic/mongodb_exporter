@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/golang/glog"
+	"github.com/jacksontj/gtm"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/rwynn/gtm"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )

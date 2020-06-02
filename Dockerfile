@@ -1,15 +1,9 @@
-FROM       golang:alpine as builder
-
-RUN apk --no-cache add curl git make perl
-RUN curl -s https://glide.sh/get | sh
+FROM golang:1.14-alpine3.11 as builder
 COPY . /go/src/github.com/dcu/mongodb_exporter
-RUN cd /go/src/github.com/dcu/mongodb_exporter && make release
+WORKDIR /go/src/github.com/dcu/mongodb_exporter
+RUN go build -o /mongoexporter github.com/dcu/mongodb_exporter
 
-FROM       alpine:3.4
-MAINTAINER David Cuadrado <dacuad@facebook.com>
-EXPOSE     9001
-
-RUN apk add --update ca-certificates
-COPY --from=builder /go/src/github.com/dcu/mongodb_exporter/release/mongodb_exporter-linux-amd64 /usr/local/bin/mongodb_exporter
-
-ENTRYPOINT [ "mongodb_exporter" ]
+FROM alpine:3.11
+ENV GOTRACEBACK=single
+CMD ["./mongoexporter"]
+COPY --from=builder /mongoexporter .
